@@ -6,7 +6,7 @@ var domain = require('domain');
 var index = fs.readFileSync('index.html');
 var favicon = fs.readFileSync('favicon.ico');
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8888;
 
 var allowedOriginalHeaders = /^Date|Last-Modified|Expires|Cache-Control|Pragma|Content-Length|Content-Type|Access-Control-Allow/i;
 
@@ -56,7 +56,7 @@ function handler(req, res) {
 				res.setHeader('Access-Control-Allow-Credentials', false);
 				res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 				res.setHeader('Expires', new Date(Date.now() + 86400000).toUTCString()); // one day in the future
-				var r = request(req.url.slice(1), {encoding: null, rejectUnauthorized: false});
+				var r = request(req.url.slice(1).replace('googledriveproxy/', ''), {encoding: null, rejectUnauthorized: false});
 				r.pipefilter = function(response, dest) {
 					for (var header in response.headers) {
 						if (!allowedOriginalHeaders.test(header)) {
